@@ -2046,3 +2046,19 @@ zebra
 zero
 zone
 zoo
+from bip_utils import Bip39MnemonicGenerator, Bip39SeedGenerator, Bip32Slip10Ed25519
+
+# Generate a new BIP-0039 mnemonic
+mnemonic = Bip39MnemonicGenerator().FromWordsNumber(12)
+print(f"Mnemonic: {mnemonic}")
+
+# Convert mnemonic to seed
+seed_bytes = Bip39SeedGenerator(mnemonic).Generate()
+
+# Derive keys using BIP-32 with Ed25519 curve
+bip32_ctx = Bip32Slip10Ed25519.FromSeed(seed_bytes)
+private_key = bip32_ctx.PrivateKey().Raw().ToHex()
+public_key = bip32_ctx.PublicKey().RawCompressed().ToHex()
+
+print(f"Private Key: {private_key}")
+print(f"Public Key: {public_key}")
